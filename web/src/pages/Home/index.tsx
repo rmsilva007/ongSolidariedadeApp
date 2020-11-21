@@ -1,8 +1,8 @@
 import React from 'react';
 import './styles.css';
-import { FiLogIn } from 'react-icons/fi';
+import { FiLogIn } from 'react-icons/fi';//pacote de icons
 import logo from '../../assets/logo.svg';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';//link para implementação de jpa
 
 const Home = () => {
   return (
@@ -15,7 +15,7 @@ const Home = () => {
         <main>
           <h1>Seu canal de cadastro para coletar doações.</h1>
           <p>Ajudamos pessoas a encontrarem organizações para receber doações.</p>
-          <Link to="/create-point">
+          <Link to="/create-point">{/*habilita o jpa */}
             <span>
               <FiLogIn />
             </span>

@@ -1,5 +1,6 @@
 import Knex from 'knex';
-
+//inserindo  items na tabela 
+//npm run knex:seed para executar esse arquivo 
 export async function seed(knex: Knex) {
   await knex('items').insert([
     {title: 'Cestas Basicas', image: 'cestabasica.svg' },

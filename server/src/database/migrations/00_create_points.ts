@@ -1,10 +1,11 @@
 import Knex from 'knex';
+//table 00 porque a ordem de criação de tabelas importa
 
 export async function up(knex: Knex) {
-  // Criar a tabela
+  
   return knex.schema.createTable('points', table => {
     table.increments('id').primary();
-    table.string('image').notNullable();
+    table.string('image').notNullable();//referência da imagem
     table.string('name').notNullable();
     table.string('email').notNullable();
     table.string('whatsapp').notNullable();
@@ -15,7 +16,7 @@ export async function up(knex: Knex) {
   });
 }
 
-export async function down(knex: Knex) {
-  // Deletar a tabela
+export async function down(knex: Knex) {// Deletar a tabela
+  
   return knex.schema.dropTable('points');
 }

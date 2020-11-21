@@ -1,14 +1,15 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import './styles.css';
+import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';//ChangeEvent = mudança de um valor em input ou select
+import './styles.css';                                                     //useEffect = o componente muda sem q se faça uma nova requisição
 import { FiArrowLeft } from 'react-icons/fi';
 import logo from '../../assets/logo.svg';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';//useHistory permite navegar de um componente pra outro sem um botão
 import { Map, TileLayer, Marker } from 'react-leaflet';
-import { LeafletMouseEvent } from 'leaflet';
+import { LeafletMouseEvent } from 'leaflet';// lib para lidar com o items selecionados no Mapa
 import api from '../../services/api';
 import axios from 'axios';
 import Dropzone from '../../components/Dropzone';
-interface Item {
+
+interface Item {//representação de um formato retornado pela api
   id: number;
   title: string;
   image_url: string;
@@ -23,7 +24,7 @@ interface IBGECityResponse {
 }
 
 const CreatePoint = () => {
-  const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<Item[]>([]);//estado carregado vazio
   const [ufs, setUf] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
 
@@ -33,7 +34,7 @@ const CreatePoint = () => {
     whatsapp: '',
   })
 
-  const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0]);
+  const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0]);//useState com argumentod de tipagem
   const [selectedUf, setSelectedUf] = useState('0');
   const [selectedCity, setSelectedCity] = useState('0');
   const [selectPosition, setSelectPosition] = useState<[number, number]>([0, 0]);
@@ -42,7 +43,7 @@ const CreatePoint = () => {
 
   const history = useHistory();
 
-  useEffect(() => {
+  useEffect(() => {//useEffect recebe duas arguemntos oq e quando
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords;
       setInitialPosition([latitude, longitude]);
@@ -57,14 +58,14 @@ const CreatePoint = () => {
   }, []);
 
   useEffect(() => {
-    axios.get<IBGEUFResponse[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
+    axios.get<IBGEUFResponse[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {//axios.get para não utilizar a api
       const ufInitials = response.data.map(uf => uf.sigla).sort();
       setUf(ufInitials);
     })
   }, []);
 
   useEffect(() => {
-    if (selectedUf === '0') { return; }
+    if (selectedUf  === '0') { return; }
     axios
       .get<IBGECityResponse[]>(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`)
       .then(response => {
@@ -74,7 +75,7 @@ const CreatePoint = () => {
 
   }, [selectedUf]);
 
-  function handleSelectUf(event: ChangeEvent<HTMLSelectElement>) {
+  function handleSelectUf(event: ChangeEvent<HTMLSelectElement>) {//informando para o changeEvent que estamos alterando um HtmlSelectElement
     const uf = event.target.value;
     setSelectedUf(uf);
   }
@@ -133,7 +134,7 @@ const CreatePoint = () => {
 
     await api.post('points', data);
     alert('Organização cadastrada com sucesso!');
-    history.push('/'); 
+    history.push('/'); //voltando para a raiz
   }
 
   return (
@@ -143,7 +144,7 @@ const CreatePoint = () => {
         <Link to="/">
           <span><FiArrowLeft /></span>
         Voltar para Home
-      </Link>
+        </Link>
       </header>
 
       <form onSubmit={handleSubmit}>
@@ -199,11 +200,11 @@ const CreatePoint = () => {
 
           <Map center={initialPosition} zoom={15} onClick={handleMapClick}>
             <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'// layout do mapa 
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            <Marker position={selectPosition} />
+            <Marker position={selectPosition} />{/*posição no mapa com pim */}
           </Map>
 
           <div className="field-group">
@@ -243,9 +244,9 @@ const CreatePoint = () => {
             <span>Selecione um ou mais itens abaixo</span>
           </legend>
           <ul className="items-grid">
-            {items.map((item) => (
+            {items.map((item) => (//percorrendo os items
               <li
-                key={item.id}
+                key={item.id}//valor único em cada um dos itens
                 className={selectedItems.includes(item.id) ? 'selected' : ''}
                 onClick={() => handleSelectItem(item.id)}
               >

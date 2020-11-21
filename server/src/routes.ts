@@ -5,7 +5,7 @@ import multer from 'multer';
 import multerConfig from './config/multer';
 import { celebrate, Joi } from 'celebrate';
 
-const routes = express.Router();
+const routes = express.Router();//função para desaclopar as rotas do arquivo principal
 const upload = multer(multerConfig);
 
 const pointsController = new PoitsController();
@@ -14,7 +14,7 @@ const itemsController = new ItemsController();
 // index: listar vários, show: listar um unico, create, update, delete
 routes.get('/items', itemsController.index);
 routes.get('/points', pointsController.index);
-routes.get('/points/:id', pointsController.show);
+routes.get('/points/:id', pointsController.show);//listando um point com um id específico
 
 routes.post(
   '/points',
